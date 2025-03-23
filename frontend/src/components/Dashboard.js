@@ -12,7 +12,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetchReviews();
-        fetchSummary();
+   //   fetchSummary();
     }, []);
 
     // ✅ Fetch reviews from backend
@@ -26,17 +26,17 @@ function Dashboard() {
     };
 
     // ✅ Fetch AI-generated summary
-    const fetchSummary = async () => {
-        setLoadingSummary(true);
-        try {
-            const response = await axios.get("http://127.0.0.1:8000/summarize_reviews");
-            setSummary(response.data.summary);
-        } catch (error) {
-            console.error("❌ Error fetching summary", error);
-        } finally {
-            setLoadingSummary(false);
-        }
-    };
+   // const fetchSummary = async () => {
+   //     setLoadingSummary(true);
+   //     try {
+   //         const response = await axios.get("http://127.0.0.1:8000/summarize_reviews");
+   //         setSummary(response.data.summary);
+   //     } catch (error) {
+   //         console.error("❌ Error fetching summary", error);
+   //     } finally {
+   //         setLoadingSummary(false);
+   //     }
+   // };
 
     // ✅ Fetch AI response based on user input
     const fetchAiResponse = async () => {
@@ -57,15 +57,15 @@ function Dashboard() {
         }
     };
 
+            //<h3>AI Summary of Customer Reviews</h3>
+            //<button onClick={fetchSummary}>Refresh AI Summary</button>
     return (
         <div className="container">
             <h2>Business Dashboard</h2>
 
             {/* ✅ AI Summary */}
-            <h3>AI Summary of Customer Reviews</h3>
             {loadingSummary ? <p>Loading summary...</p> : <p>{summary}</p>}
 
-            <button onClick={fetchSummary}>Refresh AI Summary</button>
 
             {/* ✅ AI Query Input */}
             <h3>Ask AI a Question</h3>

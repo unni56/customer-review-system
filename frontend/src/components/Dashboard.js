@@ -4,15 +4,12 @@ import "../styles.css";
 
 function Dashboard() {
     const [reviews, setReviews] = useState([]);
-    const [summary, setSummary] = useState("");
-    const [loadingSummary, setLoadingSummary] = useState(false);
     const [aiQuery, setAiQuery] = useState("");
     const [aiResponse, setAiResponse] = useState("");
     const [loadingAi, setLoadingAi] = useState(false);
-
+    
     useEffect(() => {
         fetchReviews();
-   //   fetchSummary();
     }, []);
 
     // ✅ Fetch reviews from backend
@@ -25,20 +22,7 @@ function Dashboard() {
         }
     };
 
-    // ✅ Fetch AI-generated summary
-   // const fetchSummary = async () => {
-   //     setLoadingSummary(true);
-   //     try {
-   //         const response = await axios.get("http://127.0.0.1:8000/summarize_reviews");
-   //         setSummary(response.data.summary);
-   //     } catch (error) {
-   //         console.error("❌ Error fetching summary", error);
-   //     } finally {
-   //         setLoadingSummary(false);
-   //     }
-   // };
-
-    // ✅ Fetch AI response based on user input
+    // ✅ Fetch AI response based on user query
     const fetchAiResponse = async () => {
         if (!aiQuery.trim()) {
             setAiResponse("⚠️ Please enter a valid query.");
@@ -57,35 +41,34 @@ function Dashboard() {
         }
     };
 
-            //<h3>AI Summary of Customer Reviews</h3>
-            //<button onClick={fetchSummary}>Refresh AI Summary</button>
     return (
-        <div className="container">
-            <h2>Business Dashboard</h2>
+        <div className="dashboard-container">
+            <h2 className="dashboard-title">📊 Business Dashboard</h2>
 
-            {/* ✅ AI Summary */}
-            {loadingSummary ? <p>Loading summary...</p> : <p>{summary}</p>}
+            {/* ✅ AI Chat Container */}
+            <div className="chat-container">
+                <div className="chat-box">
+                    <h3>💬 AI Chat</h3>
+                    <input
+                        type="text"
+                        value={aiQuery}
+                        onChange={(e) => setAiQuery(e.target.value)}
+                        placeholder="Ask AI (e.g., 'What are common complaints?')"
+                        className="chat-input"
+                    />
+                    <button onClick={fetchAiResponse} disabled={loadingAi} className="chat-submit">
+                        {loadingAi ? "Thinking..." : "Ask AI"}
+                    </button>
 
-
-            {/* ✅ AI Query Input */}
-            <h3>Ask AI a Question</h3>
-            <input
-                type="text"
-                value={aiQuery}
-                onChange={(e) => setAiQuery(e.target.value)}
-                placeholder="Ask AI (e.g., 'What are the most common complaints?')"
-            />
-            <button onClick={fetchAiResponse} disabled={loadingAi}>
-                {loadingAi ? "Thinking..." : "Get AI Insights"}
-            </button>
-
-            {/* ✅ Display AI Response */}
-            {aiResponse && (
-                <div className="ai-response">
-                    <h4>AI Response:</h4>
-                    <p>{aiResponse}</p>
+                    {/* ✅ AI Response Display */}
+                    {aiResponse && (
+                        <div className="chat-response">
+                            <h4>🤖 AI Response:</h4>
+                            <p>{aiResponse}</p>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 }
